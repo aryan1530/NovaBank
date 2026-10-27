@@ -1,0 +1,3 @@
+# Kubernetes deployment notes
+
+The Compose environment is the runnable local deployment. Before a cluster deployment, build and publish each service image with `infra/docker/Dockerfile.service` and the matching `MODULE`/`JAR` build args; build the frontend and fraud images from their own Dockerfiles. Configure an image registry, external secret store, TLS ingress, PostgreSQL persistence and backup, Kafka persistence, resource requests/limits, probes, network policies and migration ordering for the target cluster. Do not commit real secrets or use Compose demo credentials. The manifests are intentionally omitted until a target cluster and registry are selected; copying generic manifests would imply a deployable production configuration that does not exist yet.

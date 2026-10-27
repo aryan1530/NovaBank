@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: NovaBank Public API
+  version: 1.0.0
+  description: Simulated banking API. Payment rails are never contacted.
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+paths:
+  /api/v1/auth/register:
+    post:
+      security: []
+      summary: Register a customer
+      responses:
+        '201': { description: Registered }
+  /api/v1/auth/login:
+    post:
+      security: []
+      summary: Login and issue short-lived access and refresh tokens
+      responses:
+        '200': { description: Authenticated }
+  /api/v1/auth/refresh:
+    post:
+      security: []
+      summary: Rotate refresh token
+      responses:
+        '200': { description: Rotated }
+  /api/v1/accounts:
+    get:
+      summary: List the authenticated customer's accounts
+      responses:
+        '200': { description: Account list }
+    post:
+      summary: Open an account
+      responses:
+        '201': { description: Account opened }
+  /api/v1/transfers:
+    get:
+      summary: List transfer history
+      responses:
+        '200': { description: Transfer list }
+    post:
+      summary: Submit an idempotent simulated transfer
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Transfer accepted or completed }
+        '409': { description: Conflict }
+  /api/v1/statements/{accountId}:
+    get:
+      summary: Account transfer statement
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '200': { description: Statement }
+  /api/v1/fraud/alerts:
+    get:
+      summary: List alerts for fraud analysts and administrators
+      responses:
+        '200': { description: Alert list }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

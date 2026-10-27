@@ -1,0 +1,26 @@
+target/
+.idea/
+*.iml
+.vscode/
+.env
+.env.local
+*.log
+.DS_Store
+node_modules/
+dist/
+.angular/
+coverage/
+__pycache__/
+.venv/
+*.pyc
+ml-fraud/models/*.json
+ml-fraud/models/*.ubj
+!ml-fraud/models/.gitkeep
+ml-fraud/training-data/*.csv
+.mvn/wrapper/maven-wrapper.jar
+hs_err_pid*
+*.class
+docker-data/
+
+# Workspace-local Maven cache used when the global cache is read-only
+.maven-cache/

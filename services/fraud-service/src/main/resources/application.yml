@@ -1,0 +1,32 @@
+server:
+  port: ${SERVER_PORT:8086}
+spring:
+  application:
+    name: fraud-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fraud_db}
+    username: ${DB_USER:novabank}
+    password: ${DB_PASSWORD:novabank}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
+    consumer:
+      group-id: fraud-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+novabank:
+  jwt:
+    secret: ${JWT_SECRET:novabank-dev-jwt-secret-key-must-be-32b}
+  internal-token: ${INTERNAL_TOKEN:novabank-internal-dev-token}
+  ml-url: ${ML_FRAUD_URL:http://localhost:8090}

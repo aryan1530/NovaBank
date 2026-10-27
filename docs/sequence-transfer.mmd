@@ -1,0 +1,22 @@
+sequenceDiagram
+  actor Customer
+  participant Gateway
+  participant Transfer as Transaction Service
+  participant Fraud
+  participant Account
+  participant Ledger
+  participant Outbox
+  participant Kafka
+  Customer->>Gateway: POST transfer + Idempotency-Key
+  Gateway->>Transfer: JWT-validated request
+  Transfer->>Transfer: Validate and persist PENDING transfer
+  Transfer->>Fraud: Score risk
+  alt score exceeds hold threshold
+    Transfer->>Outbox: Persist fraud event in same transaction
+  else score accepted
+    Transfer->>Account: Apply locked debit and credit
+    Transfer->>Ledger: Post balanced journal entry
+    Transfer->>Outbox: Persist completion notification event
+  end
+  Outbox->>Kafka: Publish pending events
+  Kafka-->>Customer: Notification consumer stores inbox item

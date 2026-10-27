@@ -1,0 +1,28 @@
+flowchart LR
+  Browser[Angular 21 UI] --> Gateway[Spring Cloud Gateway]
+  Gateway --> Identity[Identity Service]
+  Gateway --> Customers[Customer Service]
+  Gateway --> Accounts[Account Service]
+  Gateway --> Transactions[Transaction Service]
+  Gateway --> Ledger[Ledger Service]
+  Gateway --> Fraud[Fraud Service]
+  Gateway --> Notifications[Notification Service]
+  Browser --> NovaAI[Nova AI chat]
+  NovaAI --> Gateway
+  Transactions --> Accounts
+  Transactions --> Ledger
+  Transactions --> Fraud
+  Transactions --> Outbox[(Transactional Outbox)]
+  Outbox --> Kafka[(Kafka)]
+  Kafka --> Notifications
+  Fraud --> ML[FastAPI + XGBoost]
+  Identity --> Pg[(PostgreSQL 16)]
+  Customers --> Pg
+  Accounts --> Pg
+  Transactions --> Pg
+  Ledger --> Pg
+  Fraud --> Pg
+  Notifications --> Pg
+  Transactions --> Redis[(Redis 7)]
+  Gateway --> OTel[Micrometer / Prometheus]
+  OTel --> Grafana[Grafana]
